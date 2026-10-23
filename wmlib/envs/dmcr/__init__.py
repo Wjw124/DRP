@@ -1,3 +1,6 @@
+# Adapted from https://github.com/QData/dmc_remastered (Apache-2.0).
+# Modified for DRP: local package imports and formatting. See LICENSE in this directory.
+
 import os
 
 SUITE_DIR = os.path.dirname(__file__)

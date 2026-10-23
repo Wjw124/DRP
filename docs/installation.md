@@ -4,7 +4,7 @@ Use Linux, an NVIDIA GPU, and a CUDA-enabled PyTorch installation. `rsync` is us
 
 ## Reference training environment
 
-The runtime used for the release smoke checks has Python 3.8.13, PyTorch 2.4.1+cu121, torchvision 0.19.1+cu121, NumPy 1.23.0, dm_control 0.0.318037100, and mujoco-py 2.0.2.8. The legacy simulator versions are retained for the task definitions used in these experiments.
+The runtime used for the release smoke checks has Ubuntu 20.04, Python 3.8.13, PyTorch 2.4.1+cu121, torchvision 0.19.1+cu121, NumPy 1.23.0, dm_control 0.0.318037100, and mujoco-py 2.0.2.8. The legacy simulator versions are retained for the task definitions used in these experiments.
 
 ```bash
 conda create -n drp python=3.8.13 pip -y
@@ -13,16 +13,19 @@ python -m pip install torch==2.4.1 torchvision==0.19.1 --index-url https://downl
 python -m pip install -r requirements.txt
 ```
 
-The package constraints resolve for Linux / Python 3.8. The smoke checks use the existing training environment; a complete installation into an empty environment has not yet been validated.
+These packages have also been installed into a fresh, isolated Python 3.8.13 environment on the reference system. The checks reuse the system GPU driver, CUDA toolkit, MuJoCo binaries, datasets, and downloaded checkpoints; Python packages and the GroundingDINO extension are installed afresh. See [validation](validation.md) for the exercised paths.
 
 ## Perception repositories
 
 ```bash
 mkdir -p third_party checkpoints
 git clone https://github.com/princeton-vl/SEA-RAFT.git third_party/SEA-RAFT
+git -C third_party/SEA-RAFT checkout 9137517ba24e628442aec097d3afe71d03503b75
 git clone https://github.com/facebookresearch/co-tracker.git third_party/co-tracker
+git -C third_party/co-tracker checkout 82e02e8029753ad4ef13cf06be7f4fc5facdda4d
 python -m pip install --no-deps -e third_party/co-tracker
 git clone https://github.com/IDEA-Research/GroundingDINO.git third_party/GroundingDINO
+git -C third_party/GroundingDINO checkout 856dde20aee659246248e20734ef9ba5214f5e44
 python -m pip install --no-build-isolation --no-deps -e third_party/GroundingDINO
 
 git clone https://github.com/facebookresearch/sam2.git third_party/sam2
@@ -33,6 +36,8 @@ export PYTHONPATH="$PWD/third_party/sam2${PYTHONPATH:+:$PYTHONPATH}"
 The SAM 2 checkout contains the SAM 2.1 image predictor. The pinned image predictor was also checked with the reference training stack. Importing its source package is the route used here; its optional CUDA postprocessing extension is not needed for the default image-predictor settings. This pinned revision's [installation metadata](https://github.com/facebookresearch/sam2/blob/98fcb164bf880f70799c324c283c758c4d20bf82/setup.py) declares newer Python/NumPy minimums than the legacy runtime above. For a modern environment, follow the [official SAM 2 instructions](https://github.com/facebookresearch/sam2#installation) and recheck the legacy simulator dependencies.
 
 GroundingDINO builds a CUDA extension. Set `CUDA_HOME` to a matching CUDA toolkit when needed and follow its [official installation instructions](https://github.com/IDEA-Research/GroundingDINO#install) if compilation fails. Its text encoder uses `bert-base-uncased`. On an offline machine, download the model/tokenizer first and set `text_encoder_type` in its Swin-B config to the local BERT directory.
+
+The `--no-deps` installs preserve the supplied package versions. `cv2` is provided by `opencv-python-headless`; GroundingDINO's metadata instead names `opencv-python`, so `pip check` reports that distribution as missing. Detector inference is tested with the installed headless implementation.
 
 Download these weights from the respective official repositories:
 

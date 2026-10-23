@@ -218,7 +218,7 @@ class TensorBoardOutputPytorch:
             # tf.summary.experimental.write_raw_pb(summary.SerializeToString(), step)
         except (IOError, OSError) as e:
             print("GIF summaries require ffmpeg in $PATH.", e)
-            self._writer.add_image(name, video, step)
+            self._writer.add_image(name, video[0], step, dataformats="HWC")
 
 
 def encode_gif(frames, fps):
@@ -230,7 +230,7 @@ def encode_gif(frames, fps):
         [
             "ffmpeg -y -f rawvideo -vcodec rawvideo",
             f"-r {fps:.02f} -s {w}x{h} -pix_fmt {pxfmt} -i - -filter_complex",
-            "[0:v]split[x][z];[z]palettegen[y];[x]fifo[x];[x][y]paletteuse",
+            "[0:v]split[x][z];[z]palettegen[y];[x][y]paletteuse",
             f"-r {fps:.02f} -f gif -",
         ]
     )
@@ -239,7 +239,7 @@ def encode_gif(frames, fps):
         proc.stdin.write(image.tobytes())
     out, err = proc.communicate()
     if proc.returncode:
-        raise IOError("\n".join([" ".join(cmd), err.decode("utf8")]))
+        raise IOError("\n".join([cmd, err.decode("utf8")]))
     del proc
     return out
 

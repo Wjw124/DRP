@@ -152,4 +152,4 @@ See [validation notes](docs/validation.md) for the tested paths and runtime. For
 
 This code builds on [IPV / ContextWM](https://github.com/thuml/ContextWM), [APV](https://github.com/younggyoseo/apv), and [DreamerV2](https://github.com/danijar/dreamerv2). Perception uses [SEA-RAFT](https://github.com/princeton-vl/SEA-RAFT), [CoTracker](https://github.com/facebookresearch/co-tracker), [GroundingDINO](https://github.com/IDEA-Research/GroundingDINO), and [SAM 2](https://github.com/facebookresearch/sam2). Environment code includes [DMControl Remastered](https://github.com/QData/dmc_remastered).
 
-The inherited MIT license is retained in [LICENSE](LICENSE). External datasets, model weights, and dependencies retain their respective terms; they are obtained separately.
+The inherited MIT license is retained in [LICENSE](LICENSE). The bundled DMControl Remastered environment code retains its [Apache 2.0 license](wmlib/envs/dmcr/LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for source attribution. External datasets, model weights, and dependencies retain their respective terms; they are obtained separately.

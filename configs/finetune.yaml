@@ -169,12 +169,6 @@ defaults:
     eps: 1e-5
     clip: 100
     wd: 1e-6
-  flow_mae_opt:
-    opt: adam
-    lr: 3e-4
-    eps: 1e-5
-    clip: 100
-    wd: 1e-6
   actor:
     layers: 4
     units: 400
