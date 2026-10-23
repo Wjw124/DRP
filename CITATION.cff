@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: Please cite the CVPR 2026 paper when using this code.
+title: 'Local Motion Matters: A Deconstruct–Recompose Paradigm for Reinforcement Learning Pre-training from Videos'
+type: software
+repository-code: 'https://github.com/Wjw124/DRP'
+authors:
+  - family-names: Wang
+    given-names: Jinwen
+  - family-names: Lin
+    given-names: Youfang
+  - family-names: Hu
+    given-names: Xiaobo
+  - family-names: Wang
+    given-names: Shuo
+  - family-names: Lv
+    given-names: Kai
+license: MIT

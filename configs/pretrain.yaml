@@ -1,0 +1,119 @@
+action_repeat: 1
+atari_grayscale: true
+camera: none
+clip_rewards: tanh
+dataset:
+  batch: 16
+  length: 25
+  num_workers: 8
+decoder:
+  act: elu
+  cnn_depth: 48
+  cnn_kernels:
+  - 5
+  - 5
+  - 6
+  - 6
+  cnn_keys: image
+  mlp_keys: $^
+  mlp_layers:
+  - 400
+  - 400
+  - 400
+  - 400
+  norm: none
+  res_depth: 3
+  res_layers: 2
+  res_norm: batch
+decoder_ctx:
+  ctx_attmask: 0.75
+decoder_type: ctx_resnet
+dmc_camera: -1
+encoder:
+  act: elu
+  cnn_depth: 48
+  cnn_kernels:
+  - 4
+  - 4
+  - 4
+  - 4
+  cnn_keys: image
+  mlp_keys: $^
+  mlp_layers:
+  - 400
+  - 400
+  - 400
+  - 400
+  norm: none
+  res_depth: 3
+  res_layers: 2
+  res_norm: batch
+encoder_ctx:
+  ctx_cnn_depth: 48
+  ctx_cond_choice: trand
+  ctx_res_layers: 2
+encoder_type: ctx_resnet
+eval_every: 5000
+grad_heads:
+- decoder
+jit: true
+kl:
+  balance: 0.8
+  forward: false
+  free: 0.0
+  free_avg: true
+log_every: 100.0
+log_keys_max: ^$
+log_keys_mean: ^$
+log_keys_sum: ^$
+log_keys_video:
+- image
+loss_scales:
+  image: 1.0
+  kl: 1.0
+model_opt:
+  clip: 100
+  eps: 1e-05
+  lr: 0.0003
+  opt: adam
+  wd: 1e-06
+precision: 16
+pretrain: 1
+render_size:
+- 64
+- 64
+replay:
+  capacity: 2000000.0
+  maxlen: 25
+  minlen: 25
+  ongoing: false
+  prioritize_ends: true
+rssm:
+  act: elu
+  action_free: false
+  deter: 1024
+  discrete: 32
+  ensemble: 1
+  fill_action: 50
+  hidden: 1024
+  min_std: 0.1
+  norm: none
+  std_act: sigmoid2
+  stoch: 32
+save_all_models: true
+seed: 0
+steps: 600000.0
+task: dmc_walker_walk
+time_limit: 0
+train_every: 1
+train_steps: 1
+video_every: 2000
+flow_patch_size: 16
+flow_embed_dim: 48
+flow_num_heads: 8
+flow_enc_layers: 6
+flow_dec_layers: 6
+flow_num_patches: 16
+flow_mask_ratio: 0.5
+flow_recon_scale: 1.0
+use_dual_attention: true

@@ -1,0 +1,311 @@
+defaults:
+  logdir: runs/finetune
+  load_logdir: none
+  seed: 0
+  task: dmc_walker_walk
+  envs: 1
+  envs_parallel: none
+  render_size:
+  - 64
+  - 64
+  dmc_camera: -1
+  camera: corner
+  dmcr_vary: all
+  atari_grayscale: true
+  time_limit: 0
+  action_repeat: 1
+  steps: 1e8
+  log_every: 1e4
+  eval_every: 1e4
+  eval_eps: 1
+  prefill: 10000
+  pretrain: 100
+  train_every: 5
+  train_steps: 1
+  expl_until: 0
+  replay:
+    capacity: 1e6
+    ongoing: false
+    minlen: 50
+    maxlen: 50
+    prioritize_ends: true
+  dataset:
+    batch: 16
+    length: 50
+  log_keys_video:
+  - image
+  log_keys_sum: ^$
+  log_keys_mean: ^$
+  log_keys_max: ^$
+  precision: 16
+  jit: true
+  stop_steps: -1
+  clip_rewards: identity
+  expl_behavior: greedy
+  expl_noise: 0.0
+  eval_noise: 0.0
+  eval_state_mean: false
+  load_modules:
+  - encoder
+  - decoder
+  - af_rssm
+  - flow_mae
+  load_strict: true
+  enc_lr_type: no_pretrain
+  concat_embed: false
+  k: 16
+  beta: 1.0
+  beta_type: abs
+  intr_seq_length: 5
+  intr_reward_norm:
+    momentum: 0.99
+    scale: 1.0
+    eps: 1e-8
+    init: 1.0
+  queue_size: 4096
+  queue_dim: 128
+  grad_heads:
+  - decoder
+  - reward
+  pred_discount: false
+  rssm:
+    action_free: false
+    fill_action: 50
+    ensemble: 1
+    hidden: 1024
+    deter: 1024
+    stoch: 32
+    discrete: 32
+    act: elu
+    norm: none
+    std_act: sigmoid2
+    min_std: 0.1
+  af_rssm:
+    action_free: false
+    fill_action: 50
+    ensemble: 1
+    hidden: 1024
+    deter: 1024
+    stoch: 32
+    discrete: 32
+    act: elu
+    norm: none
+    std_act: sigmoid2
+    min_std: 0.1
+  encoder_type: resnet
+  encoder:
+    mlp_keys: .*
+    cnn_keys: .*
+    act: elu
+    norm: none
+    cnn_depth: 48
+    cnn_kernels:
+    - 4
+    - 4
+    - 4
+    - 4
+    mlp_layers:
+    - 400
+    - 400
+    - 400
+    - 400
+    res_norm: batch
+    res_depth: 3
+    res_layers: 2
+  decoder_type: resnet
+  decoder:
+    mlp_keys: .*
+    cnn_keys: .*
+    act: elu
+    norm: none
+    cnn_depth: 48
+    cnn_kernels:
+    - 5
+    - 5
+    - 6
+    - 6
+    mlp_layers:
+    - 400
+    - 400
+    - 400
+    - 400
+    res_norm: batch
+    res_depth: 3
+    res_layers: 2
+  reward_head:
+    layers: 4
+    units: 400
+    act: elu
+    norm: none
+    dist: mse
+  discount_head:
+    layers: 4
+    units: 400
+    act: elu
+    norm: none
+    dist: binary
+  loss_scales:
+    af_kl: 0.0
+    kl: 1.0
+    reward: 1.0
+    action: 1.0
+    discount: 1.0
+    proprio: 1.0
+    aux_reward: 0.0
+  kl:
+    free: 0.0
+    forward: false
+    balance: 0.8
+    free_avg: true
+  model_opt:
+    opt: adam
+    lr: 3e-4
+    eps: 1e-5
+    clip: 100
+    wd: 1e-6
+  enc_model_opt:
+    opt: adam
+    lr: 3e-4
+    eps: 1e-5
+    clip: 100
+    wd: 1e-6
+  flow_mae_opt:
+    opt: adam
+    lr: 3e-4
+    eps: 1e-5
+    clip: 100
+    wd: 1e-6
+  actor:
+    layers: 4
+    units: 400
+    act: elu
+    norm: none
+    dist: auto
+    min_std: 0.1
+  critic:
+    layers: 4
+    units: 400
+    act: elu
+    norm: none
+    dist: mse
+  actor_opt:
+    opt: adam
+    lr: 8e-5
+    eps: 1e-5
+    clip: 100
+    wd: 1e-6
+  critic_opt:
+    opt: adam
+    lr: 8e-5
+    eps: 1e-5
+    clip: 100
+    wd: 1e-6
+  discount: 0.99
+  discount_lambda: 0.95
+  imag_horizon: 15
+  imag_batch: -1
+  actor_grad: auto
+  actor_grad_mix: 0.1
+  actor_ent: 1e-4
+  slow_target: true
+  slow_target_update: 100
+  slow_target_fraction: 1
+  slow_baseline: true
+  reward_norm:
+    momentum: 1.0
+    scale: 1.0
+    eps: 1e-8
+  expl_intr_scale: 1.0
+  expl_extr_scale: 0.0
+  expl_opt:
+    opt: adam
+    lr: 3e-4
+    eps: 1e-5
+    clip: 100
+    wd: 1e-6
+  expl_head:
+    layers: 4
+    units: 400
+    act: elu
+    norm: none
+    dist: mse
+  expl_reward_norm:
+    momentum: 1.0
+    scale: 1.0
+    eps: 1e-8
+  disag_target: stoch
+  disag_log: false
+  disag_models: 10
+  disag_offset: 1
+  disag_action_cond: true
+  expl_model_loss: kl
+  encoder_ctx:
+    ctx_res_layers: 2
+    ctx_cnn_depth: 48
+    ctx_cond_choice: trand
+    ctx_aug: none
+  decoder_ctx:
+    ctx_attmask: 0.75
+    ctx_attmaskwarmup: -1
+  motion_config: configs/motion.yaml
+  flow_patch_size: 16
+  flow_embed_dim: 48
+  flow_num_heads: 8
+  flow_enc_layers: 6
+  flow_dec_layers: 6
+  flow_num_patches: 16
+  flow_mask_ratio: 0.5
+  flow_recon_scale: 10.0
+  use_dual_attention: true
+  use_intra_attention: true
+  use_inter_attention: true
+metaworld:
+  task: metaworld_door_open
+  encoder:
+    mlp_keys: $^
+    cnn_keys: image
+  decoder:
+    mlp_keys: $^
+    cnn_keys: image
+  dataset:
+    batch: 50
+    length: 50
+  time_limit: 500
+  action_repeat: 1
+  eval_eps: 10
+  prefill: 5000
+  camera: corner
+  steps: 256000
+  concat_embed: false
+  enc_lr_type: no_pretrain
+  beta: 1.0
+  stop_steps: 255000
+dmc_remastered:
+  task: dmcr_walker_walk
+  encoder:
+    mlp_keys: $^
+    cnn_keys: image
+  decoder:
+    mlp_keys: $^
+    cnn_keys: image
+  action_repeat: 2
+  prefill: 1000
+  replay.prioritize_ends: false
+  kl.free: 1.0
+  steps: 502000
+  concat_embed: true
+  enc_lr_type: none
+  beta: 0.1
+  dmcr_vary: all
+  eval_eps: 10
+contextualized:
+  encoder_type: ctx_resnet
+  decoder_type: ctx_resnet
+dmcr_hopper:
+  dmcr_vary:
+  - bg
+  - floor
+  - body
+  - target
+  - reflectance
+  - light

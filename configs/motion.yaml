@@ -1,0 +1,10 @@
+# Set these paths to your local repositories and checkpoints.
+sea_raft_root: third_party/SEA-RAFT
+sea_raft_checkpoint: checkpoints/Tartan-C-T-TSKH-spring540x960-M.pth
+cotracker_checkpoint: checkpoints/scaled_offline.pth
+flow_batch_size: 32
+sam2_config: configs/sam2.1/sam2.1_hiera_l.yaml
+sam2_checkpoint: checkpoints/sam2.1_hiera_large.pt
+grounding_config: third_party/GroundingDINO/groundingdino/config/GroundingDINO_SwinB_cfg.py
+grounding_checkpoint: checkpoints/groundingdino_swinb_cogcoor.pth
+fallback_prompt: robot hopper
